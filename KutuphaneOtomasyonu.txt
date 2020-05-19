@@ -1,0 +1,776 @@
+
+import com.sun.corba.se.spi.orb.OperationFactory;
+import java.awt.Color;
+import java.awt.Container;
+
+import java.awt.Dimension;
+import java.awt.PopupMenu;
+
+import java.awt.Toolkit;
+
+import java.awt.event.ActionEvent;
+
+import java.awt.event.ActionListener;
+
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+
+import java.sql.SQLException;
+
+import java.sql.Statement;
+
+import java.util.logging.Level;
+
+import java.util.logging.Logger;
+
+import javax.swing.ImageIcon;
+
+import javax.swing.JButton;
+
+import javax.swing.JComboBox;
+
+import javax.swing.JFrame;
+
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+
+import javax.swing.JMenuBar;
+
+import javax.swing.JMenuItem;
+
+import javax.swing.JOptionPane;
+
+import javax.swing.JPanel;
+
+import javax.swing.JScrollPane;
+
+import javax.swing.JTable;
+
+import javax.swing.JTextArea;
+
+import javax.swing.JTextField;
+
+import javax.swing.table.DefaultTableModel;
+
+import javax.swing.table.JTableHeader;
+
+
+public class KütüphaneOtomasyonu extends JFrame{
+    
+    private Connection connection = null ;
+    private String url = mysql.local.radorehosting.com;
+    private String username = admin;
+    private String driver = ;
+    private String password = root;
+    private ResultSet result ;
+    private Statement statement ;
+    
+    
+    private JMenuBar menuBar;
+    
+    
+    private JMenuItem menuYeniKitap;
+    private JMenuItem menuGuncelle;
+    private JMenuItem menuSil;
+    private JMenuItem menuKitapListele;
+    private JMenuItem menuKitapAra;
+    private JMenuItem menuHakkında;
+    
+    
+    private JPanel anaPanel;
+    private JPanel yeniPanel;
+    private Container container ;
+    
+    private JLabel kitapNumarası;
+    private JLabel kitapIsmi;
+    private JLabel kitapTuru;
+    private JLabel kitapSayısı;
+    
+    private JTextArea txtGuncelle;
+    
+    private JTextArea  KutupHanem;
+    
+    private JTable  tablo;
+    
+    private JButton btnKitapKaydet;
+    private JButton btnGuncelleSec;
+    
+    public KütüphaneOtomasyonu(){
+        super(KutuphaneM);
+        this.setDefaultCloseOperation(JFrame.EXİT_ON_CLOSE );
+        this.setSize(500,600);
+        this.setResizable(true);
+        AcilisEkrani();
+        
+        
+        try{
+            statement = baglanti();
+            result = statement.executeQuery(SELECT  FROM KutuphaneOtomasyonu);
+            
+        }catch(Exception e){
+            JOptionPane.showConfirmDialog(null , Bağlantı Başarısız ,MYSQL BAĞLANTISI , JOptionPane.PLAIN_MESSAGE);
+            
+            
+        }
+        
+        Toolkit toolkit = getToolkit();
+        Dimension size = toolkit.getScreenSize();
+        this.setLocation(size.width2 - getWidth()2,size.height()2 - getHeight()2);
+        
+      
+        menuBar =   new JMenuBar();
+        this.setJMenuBar(menuBar);
+        
+        anasayfa = new JMenuItem(Anasayfa);
+        menuBar.add(anasayfa);
+        anasayfa.addActionListener(new ActionListener() {
+            
+            
+            public void actionPerformed(ActionEvent e) {
+                AcilisEkraniA();
+                
+            }
+        });
+        
+        menuYeniKitap = new  JMenuItem(Yeni Kitap);
+        menuBar.add(menuYeniKitap);
+        menuYeniKitap.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+               yeniKayıtmenusu();
+            }
+        });
+        
+        menuGuncelle = new JMenuItem(Güncelle);
+        menuBar.add(menuGuncelle);
+        menuGuncelle.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+               guncellemeMenusu;
+            }
+        });
+        
+        menuKitapListele = new JMenuItem(Kitap Listele);
+        menuBar.add(menuKitapListele);
+        menuKitapListele.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    listelemeYap(SELECT  FROM KutuphaneOtomasyonu);
+                } catch (SQLException exception) {
+                    JOptionPane.showConfirmDialog(null, Bağlantı Başarısız, Mysql Bağlantısı, JOptionPane.PLAIN_MESSAGE);
+                }
+               
+                    
+              
+                
+            }
+        });
+        
+        
+        menuKitapAra =  new JMenuItem(Kitap Ara);
+        menuBar.add(menuKitapAra);
+        menuKitapAra.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+           
+                aramaMenusu();
+                
+            }
+        });
+        
+        menuSil = new JMenuItem(Kitap Sil);
+        menuBar.add(menuSil);
+        menuSil.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                urunSil();
+            }
+        });
+        
+        
+        menuHakkında = new JMenuItem(Hakkında);
+        menuBar.add(menuHakkında);
+        menuHakkında.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                HakkındaMenusu();
+            }
+
+            private void HakkındaMenusu() {
+                
+            }
+        });
+        
+        anaPanel = new JPanel(null);
+        anaPanel.setSize(400,450);
+        anaPanel.setBounds(0,50,400,450);
+        this.getContentPane().add(anaPanel);
+        
+        
+    }
+    
+    public void KitapNumarasiOlustur(){
+        kitapNumarası = new JLabel(Kitap Numarası);
+        kitapNumarası.setSize(100,30);
+        kitapNumarası.setBounds(10,50,100,30);
+        yeniPanel.add(kitapNumarası);
+        
+        txtUrunNumarası = new JTextField();
+        txtUrunNumarası.setSize(250,20);
+        txtUrunNumarası.setBounds(100,50,250,25);
+        txtUrunNumarası.setEditable(false);
+        yeniPanel.add(txtUrunNumarası);
+        
+                
+    
+    }
+    
+    public void KitapİsmiOlustur(){
+        KitapIsmi= new JLabel(Kitap İsmi);
+        KitapIsmi.setSize(100,25);
+        KitapIsmi.setBounds(110,80,240,25);
+        yeniPanel.add(Kitapİsmi);
+        
+        
+        txtKitapIsmi = new JTextField();
+        txtKitapIsmi.setSize(250,20);
+        txtKitapIsmı.setBounds(115,88,250,20);
+        yeniPanel.add(txtKitapIsmı);
+        
+    }
+    
+    public void kitapTuruOlustur(){
+        kitapTuru = new JLabel(Kitap Türü);
+        kitapTuru.setSize(100,30);
+        kitapTuru.setBounds(10,110,100,30);
+        yeniPanel.add(kitapTuru);
+        
+        JTextField txtkitapTuru = new JTextField();
+        txtkitapTuru.setSize(250,20);
+        txtkitapTuru.setBounds(115,118,250,20);
+        yeniPanel.add(txtkitapTuru);
+        
+    }
+    public void KitapMiktariOlustur(){
+        kitapMiktari   =new JLabel(Ürün Miktarı);
+        kitapMiktari.setSize(100,30);
+        kitapMiktari.setBounds(10,170,250,20);
+        yeniPanel.add(kitapMiktari);
+        
+        txtkitapMiktari = new JTextField();
+        txtkitapMiktari.setSize(250,20);
+        txtkitapMiktari.setBounds(115,178,250,200);
+        yeniPanel.add(txtkitapMiktari);
+      
+    }
+    public void yeniKayiMenusu(){
+        container = getContentPane();
+        container.removeAll();
+        
+        yeniPanel = new JPanel(null);
+        yeniPanel.setSize(400,490);
+        yeniPanel.setBounds(0,0,400,490);
+        yeniPanel.setBackground(Color.red);
+         KitapNumarasiOlustur();
+        KitapİsmiOlustur();
+        kitapTuruOlustur();
+        
+        
+        
+        btnKitapKaydet = new JButton(Kaydet);
+        btnKitapKaydet.setSize(100,30);
+        btnKitapKaydet.setBounds(261,207,100,30);
+        btnKitapKaydet.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+               KitapYeniKayit();
+            }
+        });
+       yeniPanel.add(btnKitapKaydet);
+       
+       container.add(yeniPanel);
+       
+       invalidate();
+       repaint();
+        
+    }
+    public void aramaMenusu(){
+        container =getContentPane();
+        container.removeAll();
+        
+        yeniPanel = new JPanel(null);
+        yeniPanel.setSize(400,490);
+        yeniPanel.setBounds(0,0,400,490);
+        yeniPanel.setBackground(Color.WHITE);
+        String[] secenekler = {Kitap Numarasına Göre Ara,Kitap İsmine Göre Ara,Kitap Türüne Göre Ara,Kitap Miktarına Göre Ara};
+        final  JComboBox aramaSecenekleri = new JComboBox(secenekler);
+        aramaSecenekleri.setSize(250,25);
+        aramaSecenekleri.setBounds(10,10,250,25);
+        yeniPanel.add(aramaSecenekleri);
+        JButton sec =   new JButton(Seç);
+        sec.setSize(70,25);
+        sec.setBounds(270,10,70,25);
+        sec.addActionListener(new ActionListener() {
+           
+            public void actionPerformed(ActionEvent e) {
+                
+                switch (aramaSecenekleri.getSelectedIndex()){
+                    
+                    case 0
+                        icerikListeleme{kitapNumarası + Kitap   Numarasını Giriniz};
+                        break;
+                        
+                    case 1
+                        icerikListeleme{kitapIsmi + Kitap İsmini Giriniz};
+                        break;
+                    case 2
+                        icerikListeleme(kitapTuru + Kitap Türünü Giriniz);
+                        break;
+                    case 3
+                        icerikListeleme(kitapSayısı + Kitap Miktarını Giriniz);
+                        break;
+                        
+                }
+                    
+                
+            }
+        });
+        
+        yeniPanel.add(sec);
+        container.add(yeniPanel);
+        
+        invalidate();
+        repaint();
+    }
+    
+    public void icerikListeleme(String mesaj, final String sutun){
+        container = getContentPane();
+        container.removeAll();
+        İcerikArama(mesaj);
+        
+        guncelleSec.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try {
+                    listelemeYap(SELECT  FROM KutuphaneOtomasyonu WHERE+ =+ txtGuncelle.getText()+);
+                    
+                }catch (SQLException ex){
+                    JOptionPane.showConfirmDialog(null, Bağlantı Başarısız, Mysql Bağlantısı, JOptionPane.PLAIN_MESSAGE);
+                    
+                }
+            }
+        };
+        
+        yeniPanel = new JPanel(null);
+        yeniPanel.setSize(400,490);
+        yeniPanel.setBounds(0,0,400,490);
+        yeniPanel.setBackground(Color.white);
+        container.add(yeniPanel);
+        invalidate();
+        repaint();  
+            
+        
+    } 
+    
+    public void ListelemeYap(String mysqlKodu) throws  SQLException{
+            container = getContentPane();
+            container.removeAll();
+            
+            yeniPanel = new JPanel(null);
+            
+            yeniPanel.setSize(400,490);
+            yeniPanel.setBounds(0,0,400,490);
+            yeniPanel.setBackground(Color.white);
+            String[] tabloBasliklari = {No,İsim,Tür,Miktar};
+            result = statement.executeQuery(mysqlKodu);
+            result.last();
+            int KitapSayisi  = result.getRow();
+            result.first();
+            String[][] veri = new String[KitapSayisi][5];
+            for ( int i = 0; i KitapSayisi;i++){
+                veri[i][0] =Integer.toString(result.getInt(kitapNumarası));
+                veri [i][1] =result.getString(kitapIsmi);
+                veri[i][2] =result.getString(kitapTuru);
+                veri[i][3] = Integer.toString(result.getInt(kitapSayısı));
+                result.next();
+            }
+            
+            tablo.setSize(393,442);
+            tablo.setBounds(0,0,393,442);
+            tablo.setModel(new DefaultTableModel(veri,tabloBasliklari));
+            
+            JScrollPane panel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            panel.setBounds(0,0,393,442);
+            panel.getViewport().add(tablo);
+            
+            
+            JTableHeader baslik = tablo.getTableHeader();
+            
+            yeniPanel.add(panel);
+            yeniPanel.setBackground(Color.lightGray);
+            container.add(panel);
+            
+            invalidate();
+            repaint();
+                   
+    }
+    
+    public void İcerikArama(String etiketMesaj){
+        container = getContentPane();
+        container.removeAll();
+        
+        yeniPanel = new JPanel(null);
+        
+        yeniPanel.setSize(400,490);
+        yeniPanel.setBounds(0,0,400,490);
+        yeniPanel.setBackground(Color.white);
+        
+        
+        JLabel guncelle= new JLabel(etiketMesaj);
+        guncelle.setSize(200,30);
+        guncelle.setBounds(10,5,188,30);
+        yeniPanel.add(guncelle);
+        
+        
+       txtGuncelle = new JTextArea();
+        txtGuncelle.setSize(50,30);
+        txtGuncelle.setBounds(200,10,50,20);
+        yeniPanel.add(txtGuncelle);
+        
+        JButton guncelleSec = new JButton(Seç);
+        guncelleSec.setSize(70,20);
+        guncelleSec.setBounds(255,10,70,20);
+        yeniPanel.add(guncelleSec);
+        
+        container.add(yeniPanel);
+        invalidate();
+        repaint();
+        
+        
+    }
+    
+    public void guncellemeMenusu(){
+        
+        İcerikArama(Güncellenecek Kitap Araması);
+        guncelleSec.addActionListener(new ActionListener() {
+           
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    container = getContentPane();
+                    container.removeAll();
+                    
+                    yeniPanel = new JPanel(null);
+                    
+                    yeniPanel.setSize(400,490);
+                    yeniPanel.setBounds(0,0,400,490);
+                    yeniPanel.setBackground(Color.white);
+                    result = statement.executeQuery(SELECT  FROM stokProje WHERE KitapNumarasi =   + txtGuncelle.getText() +);
+                    result.first();
+                    
+                    KitapNumarasiOlustur();
+                    txtkitapNumarası.setEditable(false);
+
+                    txtkitapNumarası.setText(txtGuncelle.getText());
+                    
+                    KitapİsmiOlustur();
+                    
+                    
+                    txtkitapİsmi.setText(result.getString(kitapİsmi));
+                    
+                    kitapTuruOlustur();
+                    
+                    txtkitapTuru.setText(result.getString(kitapTuru));
+                    
+                    KitapMiktariOlustur();
+                    
+                    txtkitapSayısı.setText(Integer.toString(result.getInt(kitapSayısı))); 
+                    
+                    btnGuncelleSec.addActionListener(new ActionListener() {
+                       
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                result.updateString(kitapIsmi,txtkitapIsmi.getText());
+                                result.updateString(kitapTuru, txtkitapTuru.getText());
+                                result.updateString(kitapSayısı,Integer.parseInt(txtkitapSayısı.getText()));
+                                result.updateRow();
+                                
+                                result  = statement.executeQuery(SELECT  FROM KutuphaneOtomasyonu);
+                                JOptionPane.showConfirmDialog(null, Kayıt Güncellendi, Sonuç , JOptionPane.INFORMATION_MESSAGE);
+                                
+                                    
+                                
+
+                                
+                            } catch (Exception ex) {
+                                JOptionPane.showConfirmDialog(null, Güncelleme sırasında hata oluştu., Sonuc, JOptionPane.PLAIN_MESSAGE);
+                            }
+                            
+                        }
+                    });
+                    
+                    container.add(yeniPanel);
+                    invalidate();
+                    repaint();
+                    
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(KutuphaneOtomasyonu.class.getName()).log(Level.SEVERE, null, ex);
+                
+                }
+                
+                
+            }
+            
+            
+        }};
+    
+    
+    
+    
+    }
+     public void urunYeniKayit (){
+
+         try{
+
+             result.first();
+
+             result.moveToInsertRow(); .
+
+             updateTur(guncellenecekSütun, güncellenecekDeger);
+
+            
+             result.updateInt(kitapNumarasi, Integer.parseInt(txtkitapNumarasi.getText()));
+
+             result.updateStringkitapIsmi, txtkitapIsmi.getText());
+
+             result.updateString(kitapTuru, txtkitapTuru.getText());
+
+             result.updateInt(kitapSayısı, Integer.parseInt(txtKitapMiktari.getText()));
+
+             result.insertRow();
+             
+             txtkitapNumarasi.setText();
+
+             txtkitapIsmi.setText();
+
+             txtkitapTuru.setText();
+
+             txtkitapSayısı.setText();
+
+             JOptionPane.showMessageDialog(null, Kayıt Eklendi, Sonuç , JOptionPane.INFORMATION_MESSAGE);
+
+         }catch(Exception ex){
+
+             JOptionPane.showConfirmDialog(null, Kayıt Eklenemedi, Sonuç, JOptionPane.PLAIN_MESSAGE);
+
+         }
+
+     }
+
+    public void KitapSil(){
+
+         icerikArama(Silinecek kitap numarası);
+
+         guncelleSec.addActionListener(new ActionListener() {
+
+ 
+
+ 
+
+             public void actionPerformed(ActionEvent e) {
+
+                 try {
+
+                     result = statement.executeQuery(SELECT  FROM stokProje WHERE urunNumarasi =   + txtGuncelle.getText() +);
+
+                     result.first();
+
+                     result.deleteRow();
+
+                     result = statement.executeQuery(SELECT  FROM KutuphaneOtomasyonu);
+
+ 
+
+ 
+
+                     JOptionPane.showMessageDialog(null, Kayıt Silindi, Sonuç , JOptionPane.INFORMATION_MESSAGE);
+
+                 } catch (SQLException ex) {
+
+                     Logger.getLogger(KutuphaneOtomasyon.class.getName()).log(Level.SEVERE, null, ex);
+
+                 }
+
+ 
+
+             }
+
+         });
+
+ 
+
+        JLabel tumSil = new JLabel(Tüm kitapları sil);
+
+        tumSil.setSize(200, 30);
+
+        tumSil.setBounds(10, 40, 200, 30);
+
+        yeniPanel.add(tumSil);
+
+ 
+
+        JButton btnTumKayitlariSil = new JButton(Hepsini Sil);
+
+        btnTumKayitlariSil.setSize(100, 30);
+
+        btnTumKayitlariSil.setBounds(200, 40, 100, 30);
+
+ 
+
+        yeniPanel.add(btnTumKayitlariSil);
+
+        btnTumKayitlariSil.addActionListener(new ActionListener() {
+
+ 
+
+             public void actionPerformed(ActionEvent e) {
+
+                 try {
+
+                     statement.executeUpdate(DELETE FROM KutuphaneOtomasyonu);
+
+                 } catch (SQLException ex) {
+
+                     Logger.getLogger(KutuphaneOtomasyonu.class.getName()).log(Level.SEVERE, null, ex);
+
+                 }
+
+             }
+
+         });
+
+     }
+
+    public void acilisEkrani(){
+
+        container = getContentPane();
+
+        container.removeAll();
+
+        ImageIcon resim = new ImageIcon(resim.jpg);
+
+ 
+
+        yeniPanel = new JPanel(null);
+
+ 
+
+        yeniPanel.setSize(400, 490);
+
+        yeniPanel.setBounds(0, 0, 400, 490);
+
+ 
+
+ 
+
+        JLabel resimEkle = new JLabel(resim);
+
+        resimEkle.setSize(400, 250);
+
+        resimEkle.setBackground(Color.white);
+
+        resimEkle.setBounds(0, 220, 400, 250);
+
+ 
+
+        yeniPanel.add(resimEkle);
+
+        JTextArea txtAnaSayfa = new JTextArea ();
+
+        txtAnaSayfa.setText(
+
+                 KutupHanemm
+
+                );
+
+ 
+
+        txtAnaSayfa.setSize(400, 220);
+
+        txtAnaSayfa.setBounds(0, 0, 400, 220);
+
+        txtAnaSayfa.setEditable(false);
+
+        yeniPanel.add(txtAnaSayfa);
+
+ 
+
+        container.add(yeniPanel);
+
+ 
+
+ 
+
+        invalidate();
+
+        repaint();
+
+    }
+
+ 
+
+    public Statement baglanti() throws Exception{
+
+         Class.forName(driver).newInstance();
+
+         connection = DriverManager.getConnection(url, userName, password);
+
+         return connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+ 
+
+ 
+
+    }
+
+ 
+
+    public static void main(String[] args){
+
+        KutuphaneOtomasyonu kutuphane = new KutuphaneOtomasyonu();
+
+      kutuphane.setVisible(true);
+
+ 
+
+    }
+
+
+
+
+
+
+    
+    
+}
+    
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+       
+   
+
+   
